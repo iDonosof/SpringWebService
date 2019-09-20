@@ -1,18 +1,17 @@
 package com.siglo21.springboot.backend.apirest.models.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "USUARIO")
-public class Usuario implements Serializable {
+@Table(name = "CLIENTE")
+public class Cliente implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name = "RUT")
@@ -21,27 +20,17 @@ public class Usuario implements Serializable {
 	@Column(name = "DV")
 	private char dv;
 	
-	@Column(name = "USERNAME")
-	private String username;
-	
-	@Column(name = "PASSWORD")
-	private String password;
-	
 	@Column(name = "NOMBRE")
 	private String nombre;
 	
 	@Column(name = "APELLIDO")
 	private String apellido;
 	
-	@Column(name = "ROL")
-	private int rol;
-	
 	@Column(name = "CORREO")
 	private String correo;
 	
-	@Column(name = "FECHA_NACIMIENTO")
-	@Temporal(TemporalType.DATE)
-	private Date fechaNacimiento;
+	@Column(name = "TELEFONO")
+	private String telefono;
 
 	public int getRut() {
 		return rut;
@@ -57,22 +46,6 @@ public class Usuario implements Serializable {
 
 	public void setDv(char dv) {
 		this.dv = dv;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getNombre() {
@@ -91,14 +64,6 @@ public class Usuario implements Serializable {
 		this.apellido = apellido;
 	}
 
-	public int getRol() {
-		return rol;
-	}
-
-	public void setRol(int rol) {
-		this.rol = rol;
-	}
-
 	public String getCorreo() {
 		return correo;
 	}
@@ -107,13 +72,16 @@ public class Usuario implements Serializable {
 		this.correo = correo;
 	}
 
-	public Date getFechaNacimiento() {
-		return fechaNacimiento;
+	public String getTelefono() {
+		return telefono;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }
