@@ -2,32 +2,40 @@ package com.siglo21.springboot.backend.apirest.models.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.siglo21.springboot.backend.apirest.models.dao.IPedidoBDao;
 import com.siglo21.springboot.backend.apirest.models.entity.PedidoB;
 
+@Service
 public class PedidoBServiceImpl implements IPedidoBService{
 
+	@Autowired
+	private IPedidoBDao pedidoBDao;
+	
 	@Override
+	@Transactional(readOnly = true)
 	public List<PedidoB> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<PedidoB>) pedidoBDao.findAll();
 	}
 
 	@Override
+	@Transactional
 	public PedidoB save(PedidoB pedidoB) {
-		// TODO Auto-generated method stub
-		return null;
+		return pedidoBDao.save(pedidoB);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public PedidoB findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return pedidoBDao.findById(id).orElse(null);
 	}
 
 	@Override
+	@Transactional
 	public void delete(int id) {
-		// TODO Auto-generated method stub
-		
+		pedidoBDao.deleteById(id);
 	}
-
 }

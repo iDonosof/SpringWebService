@@ -10,7 +10,7 @@ public interface IProveedorService {
 
 	public Proveedor save(Proveedor proveedor);
 
-	public Proveedor findById(int id);
+	public Proveedor findById(String id);
 
-	public void delete(int id);
+	public void delete(String id);
 }

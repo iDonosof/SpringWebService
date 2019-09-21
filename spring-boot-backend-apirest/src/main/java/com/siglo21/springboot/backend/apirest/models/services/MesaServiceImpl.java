@@ -2,32 +2,41 @@ package com.siglo21.springboot.backend.apirest.models.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.siglo21.springboot.backend.apirest.models.dao.IMesaDao;
 import com.siglo21.springboot.backend.apirest.models.entity.Mesa;
 
-public class MesaServiceImpl implements IMesaService{
+@Service
+public class MesaServiceImpl implements IMesaService {
 
+	@Autowired
+	private IMesaDao mesaDao;
+	
 	@Override
+	@Transactional(readOnly = true)
 	public List<Mesa> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<Mesa>) mesaDao.findAll();
 	}
 
 	@Override
+	@Transactional
 	public Mesa save(Mesa mesa) {
-		// TODO Auto-generated method stub
-		return null;
+		return mesaDao.save(mesa);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Mesa findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return mesaDao.findById(id).orElse(null);
 	}
 
 	@Override
+	@Transactional
 	public void delete(int id) {
-		// TODO Auto-generated method stub
-		
+		mesaDao.deleteById(id);
 	}
 
 }

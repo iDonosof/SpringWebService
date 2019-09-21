@@ -2,32 +2,41 @@ package com.siglo21.springboot.backend.apirest.models.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.siglo21.springboot.backend.apirest.models.dao.IIngredienteDao;
 import com.siglo21.springboot.backend.apirest.models.entity.Ingrediente;
 
+@Service
 public class IngredienteServiceImpl implements IIngredienteService{
 
+	@Autowired
+	private IIngredienteDao ingredienteDao;
+	
 	@Override
+	@Transactional(readOnly = true)
 	public List<Ingrediente> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<Ingrediente>) ingredienteDao.findAll();
 	}
 
 	@Override
+	@Transactional
 	public Ingrediente save(Ingrediente ingrediente) {
-		// TODO Auto-generated method stub
-		return null;
+		return ingredienteDao.save(ingrediente);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Ingrediente findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return ingredienteDao.findById(id).orElse(null);
 	}
 
 	@Override
+	@Transactional
 	public void delete(int id) {
-		// TODO Auto-generated method stub
-		
+		ingredienteDao.deleteById(id);
 	}
 
 }

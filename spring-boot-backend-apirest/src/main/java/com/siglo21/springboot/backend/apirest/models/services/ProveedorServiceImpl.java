@@ -2,32 +2,40 @@ package com.siglo21.springboot.backend.apirest.models.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.siglo21.springboot.backend.apirest.models.dao.IProveedorDao;
 import com.siglo21.springboot.backend.apirest.models.entity.Proveedor;
 
+@Service
 public class ProveedorServiceImpl implements IProveedorService{
 
+	@Autowired
+	private IProveedorDao proveedorDao;
+	
 	@Override
+	@Transactional(readOnly = true)
 	public List<Proveedor> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return (List<Proveedor>) proveedorDao.findAll();
 	}
 
 	@Override
+	@Transactional
 	public Proveedor save(Proveedor proveedor) {
-		// TODO Auto-generated method stub
-		return null;
+		return proveedorDao.save(proveedor);
 	}
 
 	@Override
-	public Proveedor findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly = true)
+	public Proveedor findById(String id) {
+		return proveedorDao.findById(id).orElse(null);
 	}
 
 	@Override
-	public void delete(int id) {
-		// TODO Auto-generated method stub
-		
+	@Transactional
+	public void delete(String id) {
+		proveedorDao.deleteById(id);
 	}
-
 }

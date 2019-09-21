@@ -15,21 +15,17 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	@Autowired
 	private IUsuarioDao usuarioDao;
 	
-	
 	@Override
 	@Transactional(readOnly = true)
 	public List<Usuario> findAll() {
 		return (List<Usuario>) usuarioDao.findAll();
 	}
 
-
 	@Override
-	@Transactional()
+	@Transactional
 	public Usuario save(Usuario usuario) {
-		// TODO Auto-generated method stub
 		return usuarioDao.save(usuario);
 	}
-
 
 	@Override
 	@Transactional(readOnly = true)
@@ -37,11 +33,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
 		return usuarioDao.findById(id).orElse(null);
 	}
 
-
 	@Override
-	@Transactional()
+	@Transactional
 	public void delete(int id) {
 		usuarioDao.deleteById(id);
 	}
-
 }
