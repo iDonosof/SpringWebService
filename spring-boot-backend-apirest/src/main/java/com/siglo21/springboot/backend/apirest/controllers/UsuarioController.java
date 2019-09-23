@@ -19,29 +19,30 @@ import com.siglo21.springboot.backend.apirest.models.entity.Usuario;
 import com.siglo21.springboot.backend.apirest.models.services.IUsuarioService;
 
 @CrossOrigin(origins = {"http://localhost"})
-@RestController@RequestMapping("/api")
+@RestController
+@RequestMapping("/usuarios")
 public class UsuarioController {
 	
 	@Autowired
 	private IUsuarioService usuarioService;
 	
-	@GetMapping("/usuarios")
+	@GetMapping("/obtener-usuarios")
 	public List<Usuario> Usuarios() {
 		return usuarioService.findAll();
 	}
 	
-	@GetMapping("/usuarios/{id}")
+	@GetMapping("/buscar-usuario/{id}")
 	public Usuario BuscarUsuario(@PathVariable int id) {
 		return usuarioService.findById(id);
 	}
 	
-	@PostMapping("/usuarios")
+	@PostMapping("/crear-usuario")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario CrearUsuario(@RequestBody Usuario usuario) {
 		return usuarioService.save(usuario);
 	}
 	
-	@PutMapping("/usuarios/{id}")
+	@PutMapping("/actualizar-usuario/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario ActualizarUsuario(@RequestBody Usuario usuario, @PathVariable int id) {
 		Usuario usuarioActual = usuarioService.findById(id);
@@ -54,14 +55,9 @@ public class UsuarioController {
 		return usuarioService.save(usuarioActual);
 	}
 	
-	
-	@DeleteMapping("/usuarios/{id}")
+	@DeleteMapping("/eliminar-usuario/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void EliminarUsuario(@PathVariable int id) {
 		usuarioService.delete(id);
 	}
-	/*@RequestMapping("/Greeting")
-	public String index() {
-		return "Hola este es el web service del restaurante siglo XXI";
-	}*/
 }
