@@ -24,6 +24,7 @@ public class DocumentoController {
 /*
 	@Autowired
 	private IDocumentoService documentoService;
+	
 	@GetMapping("/obtener-documentos")
 	public List<Documento> Documentos() {
 		return documentoService.findAll();
