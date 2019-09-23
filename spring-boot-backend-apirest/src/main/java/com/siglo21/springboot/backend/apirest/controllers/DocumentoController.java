@@ -21,7 +21,6 @@ import com.siglo21.springboot.backend.apirest.models.services.IDocumentoService;
 @RestController
 @RequestMapping("/documentos")
 public class DocumentoController {
-/*
 	@Autowired
 	private IDocumentoService documentoService;
 	
@@ -45,6 +44,5 @@ public class DocumentoController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void EliminarDocumento(@PathVariable int id) {
 		documentoService.delete(id);
-	}*/
-	
- }
+	}
+}
