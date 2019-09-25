@@ -30,7 +30,7 @@ public class Producto implements Serializable {
 	private int precio;
 	
 	@Column(name = "CATEGORIA")
-	private int categoria;
+	private String categoria;
 
 	public int getId() {
 		return id;
@@ -72,11 +72,11 @@ public class Producto implements Serializable {
 		this.precio = precio;
 	}
 
-	public int getCategoria() {
+	public String getCategoria() {
 		return categoria;
 	}
 
-	public void setCategoria(int categoria) {
+	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
 

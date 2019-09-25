@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.siglo21.springboot.backend.apirest.models.entity.Producto;
 import com.siglo21.springboot.backend.apirest.models.services.IProductoService;
 
-@CrossOrigin(origins = {"http://localhost"})
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/productos")
 public class ProductoController {
@@ -38,13 +38,13 @@ public class ProductoController {
 	
 	@PostMapping("/crear-producto")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Producto CrearProducto(@RequestBody Producto producto) {
+	public Producto CrearProducto(Producto producto) {
 		return productoService.save(producto);
 	}
 	
 	@PutMapping("/actualizar-producto/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Producto ActualizarProducto(@RequestBody Producto producto, @PathVariable int id) {
+	public Producto ActualizarProducto(Producto producto, @PathVariable int id) {
 		Producto productoActual = productoService.findById(id);
 		productoActual.setNombre(producto.getNombre());
 		productoActual.setDescripcion(producto.getDescripcion());

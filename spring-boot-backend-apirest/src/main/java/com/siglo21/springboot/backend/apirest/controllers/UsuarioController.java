@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.siglo21.springboot.backend.apirest.models.entity.Usuario;
 import com.siglo21.springboot.backend.apirest.models.services.IUsuarioService;
 
-@CrossOrigin(origins = {"http://localhost"})
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
@@ -39,6 +39,7 @@ public class UsuarioController {
 	@PostMapping("/crear-usuario")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario CrearUsuario(@RequestBody Usuario usuario) {
+		System.out.println(usuario);
 		return usuarioService.save(usuario);
 	}
 	
