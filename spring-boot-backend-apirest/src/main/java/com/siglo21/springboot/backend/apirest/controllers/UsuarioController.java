@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,9 @@ public class UsuarioController {
 	@Autowired
 	private IUsuarioService usuarioService;
 	
+	@Autowired 
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	@GetMapping("/obtener-usuarios")
 	public List<Usuario> Usuarios() {
 		return usuarioService.findAll();
@@ -39,7 +43,7 @@ public class UsuarioController {
 	@PostMapping("/crear-usuario")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario CrearUsuario(@RequestBody Usuario usuario) {
-		System.out.println(usuario);
+		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		return usuarioService.save(usuario);
 	}
 	
@@ -47,7 +51,7 @@ public class UsuarioController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario ActualizarUsuario(@RequestBody Usuario usuario, @PathVariable int id) {
 		Usuario usuarioActual = usuarioService.findById(id);
-		usuarioActual.setPassword(usuario.getPassword());
+		usuarioActual.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		usuarioActual.setNombre(usuario.getNombre());
 		usuarioActual.setApellido(usuario.getApellido());
 		usuarioActual.setRol(usuario.getRol());

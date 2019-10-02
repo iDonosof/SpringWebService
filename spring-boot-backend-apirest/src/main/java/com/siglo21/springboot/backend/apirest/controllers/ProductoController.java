@@ -38,13 +38,13 @@ public class ProductoController {
 	
 	@PostMapping("/crear-producto")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Producto CrearProducto(Producto producto) {
+	public Producto CrearProducto(@RequestBody Producto producto) {
 		return productoService.save(producto);
 	}
 	
 	@PutMapping("/actualizar-producto/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Producto ActualizarProducto(Producto producto, @PathVariable int id) {
+	public Producto ActualizarProducto(@RequestBody Producto producto, @PathVariable int id) {
 		Producto productoActual = productoService.findById(id);
 		productoActual.setNombre(producto.getNombre());
 		productoActual.setDescripcion(producto.getDescripcion());

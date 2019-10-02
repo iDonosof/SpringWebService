@@ -3,8 +3,10 @@ package com.siglo21.springboot.backend.apirest.models.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,25 +23,21 @@ public class Reserva implements Serializable {
 	@Id
 	@Column(name = "ID")
 	private int id;
-	
+
 	@Column(name = "FECHA")
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
-	
+
 	@Column(name = "HORA")
 	private String hora;
-	
+
 	@Column(name = "CANTIDAD_PERSONAS")
 	private int cantidadPersonas;
-	
+
 	@Column(name = "CLIENTE_ID")
-	/*@ManyToOne
-	@JoinColumn(name = "RUT")*/
 	private int clienteId;
-	
+
 	@Column(name = "MESA_ID")
-	/*@ManyToOne
-	@JoinColumn(name = "ID")*/
 	private int mesaId;
 
 	public int getId() {
@@ -89,9 +87,4 @@ public class Reserva implements Serializable {
 	public void setMesaId(int mesaId) {
 		this.mesaId = mesaId;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 }
