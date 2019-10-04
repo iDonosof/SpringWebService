@@ -43,7 +43,9 @@ public class UsuarioController {
 	@PostMapping("/crear-usuario")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Usuario CrearUsuario(@RequestBody Usuario usuario) {
-		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+		if(usuario.getPassword().length() < 20) {
+			usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));			
+		}
 		return usuarioService.save(usuario);
 	}
 	
