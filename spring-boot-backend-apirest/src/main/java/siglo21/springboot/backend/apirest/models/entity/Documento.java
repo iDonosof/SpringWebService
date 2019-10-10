@@ -36,7 +36,9 @@ public class Documento implements Serializable {
 
 	@OneToMany(mappedBy = "documentoId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<OrdenH> ordenHId;
-	
+
+	@OneToMany(mappedBy = "documentoId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<PedidoH> pedidoH;
 
 	public List<OrdenH> getOrdenHId() {
 		return ordenHId;
@@ -76,6 +78,14 @@ public class Documento implements Serializable {
 
 	public void setTipo(int tipo) {
 		this.tipo = tipo;
+	}
+
+	public List<PedidoH> getPedidoH() {
+		return pedidoH;
+	}
+
+	public void setPedidoH(List<PedidoH> pedidoH) {
+		this.pedidoH = pedidoH;
 	}
 
 }

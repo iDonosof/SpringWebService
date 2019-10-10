@@ -45,6 +45,7 @@ public class OrdenBController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public OrdenB ActualizarOrdenB(@RequestBody OrdenB ordenB, @PathVariable int id) {
 		OrdenB ordenBActual = ordenBService.findById(id);
+		ordenBActual.setCantidad(ordenB.getCantidad());
 		return ordenBService.save(ordenBActual);
 	}
 

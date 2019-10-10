@@ -4,10 +4,18 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "INGREDIENTE")
@@ -25,9 +33,12 @@ public class Ingrediente implements Serializable {
 
 	@Column(name = "PLATILLO_ID")
 	private int platilloId;
-
-	@Column(name = "PRODUCTO_ID")
-	private int productoId;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "PRODUCTO_ID", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	private Producto productoId;
 
 	public int getId() {
 		return id;
@@ -53,11 +64,11 @@ public class Ingrediente implements Serializable {
 		this.platilloId = platilloId;
 	}
 
-	public int getProductoId() {
+	public Producto getProductoId() {
 		return productoId;
 	}
 
-	public void setProductoId(int productoId) {
+	public void setProductoId(Producto productoId) {
 		this.productoId = productoId;
 	}
 

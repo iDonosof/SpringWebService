@@ -38,14 +38,15 @@ public class PedidoHController {
 
 	@PostMapping("/crear-pedidoh")
 	@ResponseStatus(HttpStatus.CREATED)
-	public PedidoH CrearPedidoH(@RequestBody PedidoH PedidoH) {
-		return PedidoHService.save(PedidoH);
+	public PedidoH CrearPedidoH(@RequestBody PedidoH pedidoH) {
+		return PedidoHService.save(pedidoH);
 	}
 
 	@PutMapping("/actualizar-pedidoh/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public PedidoH ActualizarPedidoH(@RequestBody PedidoH PedidoH, @PathVariable int id) {
+	public PedidoH ActualizarPedidoH(@RequestBody PedidoH pedidoH, @PathVariable int id) {
 		PedidoH PedidoHActual = PedidoHService.findById(id);
+		PedidoHActual.setTotal(pedidoH.getTotal());
 		return PedidoHService.save(PedidoHActual);
 	}
 

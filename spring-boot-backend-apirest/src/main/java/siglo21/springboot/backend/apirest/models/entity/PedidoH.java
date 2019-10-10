@@ -32,6 +32,9 @@ public class PedidoH implements Serializable {
 
 	@Column(name = "TOTAL")
 	private int total;
+	
+	@Column(name = "DOCUMENTO_ID")
+	private int documentoId;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "PROVEEDOR_ID", nullable = false)

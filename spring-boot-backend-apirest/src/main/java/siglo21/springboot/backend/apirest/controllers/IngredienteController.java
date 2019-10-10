@@ -46,6 +46,7 @@ public class IngredienteController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Ingrediente ActualizarIngrediente(@RequestBody Ingrediente ingrediente, @PathVariable int id) {
 		Ingrediente ingredienteActual = ingredienteService.findById(id);
+		ingredienteActual.setCantidad(ingrediente.getCantidad());
 		return ingredienteService.save(ingredienteActual);
 	}
 

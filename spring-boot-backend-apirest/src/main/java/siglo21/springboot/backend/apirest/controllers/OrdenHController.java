@@ -45,6 +45,8 @@ public class OrdenHController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public OrdenH ActualizarOrdenH(@RequestBody OrdenH ordenH, @PathVariable int id) {
 		OrdenH ordenHActual = ordenHService.findById(id);
+		ordenHActual.setEstado(ordenH.getEstado());
+		ordenHActual.setTotal(ordenH.getTotal());
 		return ordenHService.save(ordenHActual);
 	}
 

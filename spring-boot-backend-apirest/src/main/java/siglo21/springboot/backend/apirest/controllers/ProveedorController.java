@@ -45,6 +45,10 @@ public class ProveedorController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Proveedor ActualizarProveedor(@RequestBody Proveedor proveedor, @PathVariable String id) {
 		Proveedor proveedorActual = proveedorService.findById(id);
+		proveedorActual.setNombre(proveedor.getNombre());
+		proveedorActual.setTelefono(proveedor.getTelefono());
+		proveedorActual.setDireccion(proveedor.getDireccion());
+		proveedorActual.setCorreo(proveedor.getCorreo());
 		return proveedorService.save(proveedorActual);
 	}
 

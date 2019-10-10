@@ -46,6 +46,7 @@ public class DocumentoController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Documento ActualizarDocumento(@RequestBody Documento documento, @PathVariable int id) {
 		Documento documentoActual = documentoService.findById(id);
+		documentoActual.setTipo(documento.getTipo());
 		return documentoService.save(documentoActual);
 	}
 

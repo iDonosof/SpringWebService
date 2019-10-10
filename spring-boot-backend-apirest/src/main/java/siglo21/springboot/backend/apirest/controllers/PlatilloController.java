@@ -45,6 +45,8 @@ public class PlatilloController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Platillo ActualizarPlatillo(@RequestBody Platillo platillo, @PathVariable int id) {
 		Platillo platilloActual = platilloService.findById(id);
+		platilloActual.setNombre(platillo.getNombre());
+		platilloActual.setTiempo(platillo.getTiempo());
 		return platilloService.save(platilloActual);
 	}
 

@@ -46,6 +46,8 @@ public class PedidoBController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoB ActualizarPedidoB(@RequestBody PedidoB pedidoB, @PathVariable int id) {
 		PedidoB pedidoBActual = pedidoBService.findById(id);
+		pedidoBActual.setCantidad(pedidoB.getCantidad());
+		pedidoBActual.setSubtotal(pedidoB.getSubtotal());
 		return pedidoBService.save(pedidoBActual);
 	}
 

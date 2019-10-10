@@ -45,6 +45,11 @@ public class ProductoController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Producto ActualizarProducto(@RequestBody Producto producto, @PathVariable int id) {
 		Producto productoActual = productoService.findById(id);
+		productoActual.setNombre(producto.getNombre());
+		productoActual.setDescripcion(producto.getDescripcion());
+		productoActual.setCantidad(producto.getCantidad());
+		productoActual.setPrecio(producto.getPrecio());
+		productoActual.setCategoria(producto.getCategoria());
 		return productoService.save(productoActual);
 	}
 
