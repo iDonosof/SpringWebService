@@ -53,7 +53,7 @@ public class ClienteController {
 		return clienteService.save(clienteActual);
 	}
 
-	@DeleteMapping("/eliminar-usuario/{id}")
+	@DeleteMapping("/eliminar-cliente/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void EliminarCliente(@PathVariable int id) {
 		clienteService.delete(id);

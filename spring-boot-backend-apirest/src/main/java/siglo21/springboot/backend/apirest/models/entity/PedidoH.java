@@ -32,7 +32,10 @@ public class PedidoH implements Serializable {
 
 	@Column(name = "TOTAL")
 	private int total;
-	
+
+	@Column(name = "ESTADO")
+	private int estado;
+
 	@Column(name = "DOCUMENTO_ID")
 	private int documentoId;
 
@@ -75,6 +78,22 @@ public class PedidoH implements Serializable {
 
 	public void setPedidoBId(List<PedidoB> pedidoBId) {
 		this.pedidoBId = pedidoBId;
+	}
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	public int getDocumentoId() {
+		return documentoId;
+	}
+
+	public void setDocumentoId(int documentoId) {
+		this.documentoId = documentoId;
 	}
 
 }
