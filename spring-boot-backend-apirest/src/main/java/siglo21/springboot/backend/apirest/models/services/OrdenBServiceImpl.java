@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import siglo21.springboot.backend.apirest.models.dao.IOrdenBDao;
 import siglo21.springboot.backend.apirest.models.entity.OrdenB;
-import siglo21.springboot.backend.apirest.models.entity.OrdenH;
 
 @Service
 public class OrdenBServiceImpl implements IOrdenBService {

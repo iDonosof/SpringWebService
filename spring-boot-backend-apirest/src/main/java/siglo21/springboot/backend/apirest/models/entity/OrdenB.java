@@ -39,7 +39,7 @@ public class OrdenB implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Platillo platilloId;
-	
+
 	@Column(name = "ORDEN_H_ID")
 	private int ordenHId;
 
@@ -73,6 +73,14 @@ public class OrdenB implements Serializable {
 
 	public void setPlatilloId(Platillo platilloId) {
 		this.platilloId = platilloId;
+	}
+
+	public int getOrdenHId() {
+		return ordenHId;
+	}
+
+	public void setOrdenHId(int ordenHId) {
+		this.ordenHId = ordenHId;
 	}
 
 }

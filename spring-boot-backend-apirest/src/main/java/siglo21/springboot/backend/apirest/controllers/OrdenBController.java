@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import siglo21.springboot.backend.apirest.models.entity.OrdenB;
 import siglo21.springboot.backend.apirest.models.services.IOrdenBService;
 
-@CrossOrigin(origins = { "http://localhost" })
+@CrossOrigin(origins = { "http://localhost", "*" })
 @RestController
 @RequestMapping("/ordenb")
 public class OrdenBController {

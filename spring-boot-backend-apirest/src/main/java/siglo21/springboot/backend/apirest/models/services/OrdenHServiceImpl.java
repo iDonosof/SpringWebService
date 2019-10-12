@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import siglo21.springboot.backend.apirest.models.dao.IOrdenBDao;
 import siglo21.springboot.backend.apirest.models.dao.IOrdenHDao;
 import siglo21.springboot.backend.apirest.models.entity.OrdenB;
 import siglo21.springboot.backend.apirest.models.entity.OrdenH;
@@ -14,6 +15,9 @@ public class OrdenHServiceImpl implements IOrdenHService {
 
 	@Autowired
 	private IOrdenHDao ordenHDao;
+
+	@Autowired
+	private IOrdenBDao ordenBDao;
 
 	@Override
 	public List<OrdenH> findAll() {
@@ -27,6 +31,14 @@ public class OrdenHServiceImpl implements IOrdenHService {
 
 	@Override
 	public OrdenH save(OrdenH ordenH) {
+		OrdenH orden = new OrdenH();
+		orden.setTotal(ordenH.getTotal());
+		orden.setEstado(ordenH.getEstado());
+		orden.setDocumentoId(ordenH.getDocumentoId());
+		OrdenH ordenHTemp = ordenHDao.save(orden);
+		if (ordenH.getOrdenBId().size() != 0)
+			AgregarOrden(ordenH, ordenHTemp.getId());
+
 		return RemoverIngredientes(ordenHDao.save(ordenH));
 	}
 
@@ -51,6 +63,23 @@ public class OrdenHServiceImpl implements IOrdenHService {
 			}
 		}
 		return param;
+	}
+
+	private boolean AgregarOrden(OrdenH orden, int idOrdenH) {
+		try {
+			for (OrdenB ordenB : orden.getOrdenBId()) {
+				OrdenB ob = new OrdenB();
+				ob.setCantidad(ordenB.getCantidad());
+				ob.setSubtotal(ordenB.getSubtotal());
+				ob.setPlatilloId(ordenB.getPlatilloId());
+				ob.setOrdenHId(idOrdenH);
+				ordenBDao.save(ob);
+			}
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return false;
 	}
 
 }
