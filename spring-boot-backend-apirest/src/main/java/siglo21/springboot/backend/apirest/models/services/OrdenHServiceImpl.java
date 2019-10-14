@@ -1,5 +1,6 @@
 package siglo21.springboot.backend.apirest.models.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,11 @@ public class OrdenHServiceImpl implements IOrdenHService {
 		orden.setTotal(ordenH.getTotal());
 		orden.setEstado(ordenH.getEstado());
 		orden.setDocumentoId(ordenH.getDocumentoId());
+		orden.setOrdenBId(new ArrayList<OrdenB>());
+		orden.setMesaId(ordenH.getMesaId());
 		OrdenH ordenHTemp = ordenHDao.save(orden);
 		if (ordenH.getOrdenBId().size() != 0)
 			AgregarOrden(ordenH, ordenHTemp.getId());
-
 		return RemoverIngredientes(ordenHDao.save(ordenH));
 	}
 
