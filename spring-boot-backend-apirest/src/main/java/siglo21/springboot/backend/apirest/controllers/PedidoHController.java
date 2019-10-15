@@ -24,35 +24,40 @@ import siglo21.springboot.backend.apirest.models.services.IPedidoHService;
 public class PedidoHController {
 
 	@Autowired
-	private IPedidoHService PedidoHService;
+	private IPedidoHService pedidoHService;
 
 	@GetMapping("/obtener-pedidoh")
 	public List<PedidoH> ObtenerPedidoHs() {
-		return PedidoHService.findAll();
+		return pedidoHService.findAll();
 	}
 
 	@GetMapping("/buscar-pedidoh/{id}")
 	public PedidoH BuscarPedidoH(@PathVariable int id) {
-		return PedidoHService.findById(id);
+		return pedidoHService.findById(id);
+	}
+	
+	@GetMapping("/cambiar-estado-pedidoh({id}")
+	public PedidoH CambiarEstadoPedidoH(@PathVariable int id) {
+		return pedidoHService.changeStatus(id);
 	}
 
 	@PostMapping("/crear-pedidoh")
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoH CrearPedidoH(@RequestBody PedidoH pedidoH) {
-		return PedidoHService.save(pedidoH);
+		return pedidoHService.save(pedidoH);
 	}
 
 	@PutMapping("/actualizar-pedidoh/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoH ActualizarPedidoH(@RequestBody PedidoH pedidoH, @PathVariable int id) {
-		PedidoH PedidoHActual = PedidoHService.findById(id);
+		PedidoH PedidoHActual = pedidoHService.findById(id);
 		PedidoHActual.setTotal(pedidoH.getTotal());
-		return PedidoHService.save(PedidoHActual);
+		return pedidoHService.save(PedidoHActual);
 	}
 
 	@DeleteMapping("/eliminar-pedidoh/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void EliminarPedidoH(@PathVariable int id) {
-		PedidoHService.delete(id);
+		pedidoHService.delete(id);
 	}
 }

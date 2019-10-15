@@ -8,6 +8,8 @@ public interface IPedidoHService {
 	public List<PedidoH> findAll();
 
 	public PedidoH findById(int id);
+	
+	public PedidoH changeStatus(int id);
 
 	public PedidoH save(PedidoH pedidoH);
 

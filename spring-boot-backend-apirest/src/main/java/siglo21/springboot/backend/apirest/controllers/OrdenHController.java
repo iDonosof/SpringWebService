@@ -34,6 +34,11 @@ public class OrdenHController {
 	public OrdenH BuscarOrdenH(@PathVariable int id) {
 		return ordenHService.findById(id);
 	}
+	
+	@GetMapping("/cambiar-estado-ordenh({id}")
+	public OrdenH CambiarEstadoOrdenH(@PathVariable int id) {
+		return ordenHService.changeStatus(id);
+	}
 
 	@PostMapping("/crear-ordenh")
 	@ResponseStatus(HttpStatus.CREATED)

@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import siglo21.springboot.backend.apirest.models.dao.IPedidoBDao;
 import siglo21.springboot.backend.apirest.models.dao.IPedidoHDao;
+import siglo21.springboot.backend.apirest.models.dao.IProductoDao;
 import siglo21.springboot.backend.apirest.models.entity.PedidoB;
 import siglo21.springboot.backend.apirest.models.entity.PedidoH;
+import siglo21.springboot.backend.apirest.models.entity.Producto;
 
 @Service
 public class PedidoHServiceImpl implements IPedidoHService {
@@ -20,6 +22,9 @@ public class PedidoHServiceImpl implements IPedidoHService {
 	
 	@Autowired
 	private IPedidoBDao pedidoBDao;
+	
+	@Autowired
+	private IProductoDao productoDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -54,6 +59,23 @@ public class PedidoHServiceImpl implements IPedidoHService {
 		pedidoHDao.deleteById(id);
 	}
 	
+	@Override
+	public PedidoH changeStatus(int id) {
+		try {
+			PedidoH pedidoHTemp = pedidoHDao.findById(id).orElse(null);
+			if(pedidoHTemp != null) {
+				pedidoHTemp.setEstado(2);
+				for(PedidoB pedidob : pedidoHTemp.getPedidoBId()) {
+					ActualizarStock(pedidob.getProductoId().getId(), pedidob.getCantidad());
+				}
+				return pedidoHDao.save(pedidoHTemp);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+	
 	private boolean AgregarPedido(PedidoH pedidoH, int idPedidoH) {
 		try {
 			for(PedidoB pedidoB : pedidoH.getPedidoBId()) {
@@ -67,6 +89,21 @@ public class PedidoHServiceImpl implements IPedidoHService {
 			return true;
 		} catch (Exception e) {
 			// TODO: handle exception
+		}
+		return false;
+	}
+	
+	private boolean ActualizarStock(int id, int cantidad) {
+		try {
+			Producto producto = productoDao.findById(id).orElse(null);
+			if(producto != null) {
+				producto.setCantidad(producto.getCantidad() + cantidad);
+				if(productoDao.save(producto) != null)
+					return true;
+			}
+			throw new Exception();
+		} catch (Exception e) {
+			
 		}
 		return false;
 	}

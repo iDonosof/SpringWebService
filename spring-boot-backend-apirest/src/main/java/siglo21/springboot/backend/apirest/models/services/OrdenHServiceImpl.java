@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import siglo21.springboot.backend.apirest.models.dao.IOrdenBDao;
@@ -48,6 +50,20 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	public void delete(int id) {
 		ordenHDao.deleteById(id);
 	}
+	
+	@Override
+	public OrdenH changeStatus(int id) {
+		try {
+			OrdenH ordenHTemp = ordenHDao.findById(id).orElse(null);
+			if(ordenHTemp != null) {
+				ordenHTemp.setEstado(2);
+				return ordenHDao.save(ordenHTemp);
+			}
+		} catch (Exception e) {
+			
+		}
+		return null;
+	}
 
 	private List<OrdenH> RemoverIngredientes(List<OrdenH> param) {
 		for (OrdenH ordenh : param) {
@@ -83,5 +99,7 @@ public class OrdenHServiceImpl implements IOrdenHService {
 		}
 		return false;
 	}
+
+	
 
 }

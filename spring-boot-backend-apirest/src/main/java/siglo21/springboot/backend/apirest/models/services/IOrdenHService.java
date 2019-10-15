@@ -13,4 +13,6 @@ public interface IOrdenHService {
 	public OrdenH save(OrdenH ordenH);
 	
 	public void delete(int id);
+	
+	public OrdenH changeStatus(int id);
 }
