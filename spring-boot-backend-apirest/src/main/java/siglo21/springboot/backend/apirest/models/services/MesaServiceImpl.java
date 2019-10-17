@@ -40,10 +40,14 @@ public class MesaServiceImpl implements IMesaService {
 	}
 
 	@Override
+	@Transactional
 	public Mesa changeStatusAvailable(int id) {
 		try {
-			throw new Exception();
-			
+			Mesa mesa = mesaDao.findById(id).orElse(null);
+			if(mesa != null) {
+				mesa.setEstado(1);
+				return mesaDao.save(mesa);
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -51,9 +55,17 @@ public class MesaServiceImpl implements IMesaService {
 	}
 
 	@Override
+	@Transactional
 	public Mesa changeStatusNotAvailable(int id) {
-		// TODO Auto-generated method stub
+		try {
+			Mesa mesa = mesaDao.findById(id).orElse(null);
+			if(mesa != null) {
+				mesa.setEstado(2);
+				return mesaDao.save(mesa);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return null;
 	}
-
 }

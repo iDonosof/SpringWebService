@@ -36,6 +36,16 @@ public class MesaController {
 		return mesaService.findById(id);
 	}
 	
+	@GetMapping("/cambiar-estado-disponible/{id}")
+	public Mesa CambiarEstadoDisponible(@PathVariable int id) {
+		return mesaService.changeStatusAvailable(id);
+	}
+	
+	@GetMapping("/cambiar-estado-no-disponible/{id}") 
+	public Mesa CambiarEstadoNoDisponible(@PathVariable int id) {
+		return mesaService.changeStatusNotAvailable(id);
+	}
+	
 	@PostMapping("/crear-mesa")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Mesa CrearMesa(@RequestBody Mesa mesa) {

@@ -7,12 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import siglo21.springboot.backend.apirest.models.dao.IIngredienteDao;
+import siglo21.springboot.backend.apirest.models.dao.IProductoDao;
 import siglo21.springboot.backend.apirest.models.entity.Ingrediente;
 
 @Service
-public class IngredienteServiceImpl implements IIngredienteService{
+public class IngredienteServiceImpl implements IIngredienteService {
+	
 	@Autowired
 	private IIngredienteDao ingredienteDao;
+	
+	@Autowired
+	private IProductoDao productoDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -29,6 +34,7 @@ public class IngredienteServiceImpl implements IIngredienteService{
 	@Override
 	@Transactional
 	public Ingrediente save(Ingrediente ingrediente) {
+		ingrediente.setProductoId(productoDao.findById(ingrediente.getProductoId().getId()).orElse(null));
 		return ingredienteDao.save(ingrediente);
 	}
 

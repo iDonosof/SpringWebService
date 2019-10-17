@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import siglo21.springboot.backend.apirest.models.dao.IPedidoBDao;
 import siglo21.springboot.backend.apirest.models.dao.IPedidoHDao;
 import siglo21.springboot.backend.apirest.models.dao.IProductoDao;
+import siglo21.springboot.backend.apirest.models.dao.IProveedorDao;
 import siglo21.springboot.backend.apirest.models.entity.PedidoB;
 import siglo21.springboot.backend.apirest.models.entity.PedidoH;
 import siglo21.springboot.backend.apirest.models.entity.Producto;
@@ -25,6 +26,9 @@ public class PedidoHServiceImpl implements IPedidoHService {
 	
 	@Autowired
 	private IProductoDao productoDao;
+	
+	@Autowired
+	private IProveedorDao proveedorDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -45,10 +49,10 @@ public class PedidoHServiceImpl implements IPedidoHService {
 		pedido.setTotal(pedidoH.getTotal());
 		pedido.setEstado(pedidoH.getEstado());
 		pedido.setDocumentoId(pedidoH.getDocumentoId());
-		pedido.setProveedor(pedidoH.getProveedor());
+		pedido.setProveedor(proveedorDao.findById(pedido.getProveedor().getRut()).orElse(null));
 		pedido.setPedidoBId(new ArrayList<PedidoB>());
 		PedidoH pedidoHTemp = pedidoHDao.save(pedido);
-		if(pedidoH.getPedidoBId().size()!= 0)
+		if(pedidoH.getPedidoBId().size()!= 0 && pedidoHTemp != null)
 			AgregarPedido(pedidoH, pedidoHTemp.getId());
 		return pedidoHDao.save(pedidoH);
 	}
@@ -60,6 +64,7 @@ public class PedidoHServiceImpl implements IPedidoHService {
 	}
 	
 	@Override
+	@Transactional
 	public PedidoH changeStatus(int id) {
 		try {
 			PedidoH pedidoHTemp = pedidoHDao.findById(id).orElse(null);
@@ -83,7 +88,7 @@ public class PedidoHServiceImpl implements IPedidoHService {
 				pb.setCantidad(pedidoB.getCantidad());
 				pb.setSubtotal(pedidoB.getSubtotal());
 				pb.setPedidoHId(idPedidoH);
-				pb.setProductoId(pedidoB.getProductoId());
+				pb.setProductoId(productoDao.findById(pedidoB.getProductoId().getId()).orElse(null));
 				pedidoBDao.save(pb);
 			}
 			return true;

@@ -14,5 +14,5 @@ public interface IOrdenHService {
 	
 	public void delete(int id);
 	
-	public OrdenH changeStatus(int id);
+	public OrdenH changeStatusPaid(int id);
 }

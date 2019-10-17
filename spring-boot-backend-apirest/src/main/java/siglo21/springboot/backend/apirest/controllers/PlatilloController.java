@@ -22,6 +22,7 @@ import siglo21.springboot.backend.apirest.models.services.IPlatilloService;
 @RestController
 @RequestMapping("/platillos")
 public class PlatilloController {
+	
 	@Autowired
 	private IPlatilloService platilloService;
 

@@ -36,7 +36,7 @@ public class PedidoHController {
 		return pedidoHService.findById(id);
 	}
 	
-	@GetMapping("/cambiar-estado-pedidoh({id}")
+	@GetMapping("/cambiar-estado-pedidoh/{id}")
 	public PedidoH CambiarEstadoPedidoH(@PathVariable int id) {
 		return pedidoHService.changeStatus(id);
 	}

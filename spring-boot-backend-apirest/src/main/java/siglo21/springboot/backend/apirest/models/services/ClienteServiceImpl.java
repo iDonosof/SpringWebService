@@ -38,4 +38,9 @@ public class ClienteServiceImpl implements IClienteService {
 	public void delete(int id) {
 		clienteDao.deleteById(id);
 	}
+
+	@Override
+	public boolean existsById(int id) {
+		return clienteDao.existsById(id);
+	}
 }

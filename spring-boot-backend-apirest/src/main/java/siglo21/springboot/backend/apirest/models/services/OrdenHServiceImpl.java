@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import siglo21.springboot.backend.apirest.models.dao.IOrdenBDao;
 import siglo21.springboot.backend.apirest.models.dao.IOrdenHDao;
+import siglo21.springboot.backend.apirest.models.dao.IPlatilloDao;
 import siglo21.springboot.backend.apirest.models.entity.OrdenB;
 import siglo21.springboot.backend.apirest.models.entity.OrdenH;
 
@@ -21,18 +21,24 @@ public class OrdenHServiceImpl implements IOrdenHService {
 
 	@Autowired
 	private IOrdenBDao ordenBDao;
+	
+	@Autowired
+	private IPlatilloDao platilloDao;
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<OrdenH> findAll() {
 		return RemoverIngredientes((List<OrdenH>) ordenHDao.findAll());
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public OrdenH findById(int id) {
 		return RemoverIngredientes(ordenHDao.findById(id).orElse(null));
 	}
 
 	@Override
+	@Transactional
 	public OrdenH save(OrdenH ordenH) {
 		OrdenH orden = new OrdenH();
 		orden.setTotal(ordenH.getTotal());
@@ -47,12 +53,14 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	}
 
 	@Override
+	@Transactional
 	public void delete(int id) {
 		ordenHDao.deleteById(id);
 	}
 	
 	@Override
-	public OrdenH changeStatus(int id) {
+	@Transactional
+	public OrdenH changeStatusPaid(int id) {
 		try {
 			OrdenH ordenHTemp = ordenHDao.findById(id).orElse(null);
 			if(ordenHTemp != null) {
@@ -60,7 +68,7 @@ public class OrdenHServiceImpl implements IOrdenHService {
 				return ordenHDao.save(ordenHTemp);
 			}
 		} catch (Exception e) {
-			
+			// TODO: handle exception
 		}
 		return null;
 	}
@@ -89,7 +97,7 @@ public class OrdenHServiceImpl implements IOrdenHService {
 				OrdenB ob = new OrdenB();
 				ob.setCantidad(ordenB.getCantidad());
 				ob.setSubtotal(ordenB.getSubtotal());
-				ob.setPlatilloId(ordenB.getPlatilloId());
+				ob.setPlatilloId(platilloDao.findById(ordenB.getPlatilloId().getId()).orElse(null));
 				ob.setOrdenHId(idOrdenH);
 				ordenBDao.save(ob);
 			}

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import siglo21.springboot.backend.apirest.models.dao.IPedidoBDao;
+import siglo21.springboot.backend.apirest.models.dao.IProductoDao;
 import siglo21.springboot.backend.apirest.models.entity.PedidoB;
 
 @Service
@@ -14,6 +15,9 @@ public class PedidoBServiceImpl implements IPedidoBService {
 
 	@Autowired
 	private IPedidoBDao pedidoBDao;
+	
+	@Autowired
+	private IProductoDao productoDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -30,6 +34,7 @@ public class PedidoBServiceImpl implements IPedidoBService {
 	@Override
 	@Transactional
 	public PedidoB save(PedidoB pedidoB) {
+		pedidoB.setProductoId(productoDao.findById(pedidoB.getProductoId().getId()).orElse(null));
 		return pedidoBDao.save(pedidoB);
 	}
 

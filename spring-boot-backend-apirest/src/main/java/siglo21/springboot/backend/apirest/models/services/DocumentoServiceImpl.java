@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import siglo21.springboot.backend.apirest.models.dao.IDocumentoDao;
 import siglo21.springboot.backend.apirest.models.dao.IMesaDao;
@@ -53,21 +54,25 @@ public class DocumentoServiceImpl implements IDocumentoService {
 	private IProductoDao productoDao;
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<Documento> findAll() {
 		return RemoverIngredientes((List<Documento>) documentoDao.findAll());
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Documento findById(int id) {
 		return RemoverIngredientes(documentoDao.findById(id).orElse(null));
 	}
 
 	@Override
+	@Transactional
 	public Documento save(Documento documento) {
 		return AgregarDocumento(documento) ?  documento : null;
 	}
 
 	@Override
+	@Transactional
 	public void delete(int id) {
 		documentoDao.deleteById(id);
 	}
@@ -118,9 +123,9 @@ public class DocumentoServiceImpl implements IDocumentoService {
 			if(documentoTemp != null) {
 				//Pregunto si la lista de ordenes tiene un largo distinto a 0 es decir que no este vacia y que no sea nula, si se cumplen ambos casos realiza el metodo de insercion de las ordenes 
 				//En el caso de pedido pregunto si tiene un largo distinto a 0 es decir que no este vacia y que no sea nula, si se cumplen ambos casos realiza el metodo de insercion de los pedidos
-				if(documento.getOrdenHId().size() != 0 && documento.getOrdenHId() != null ? AgregarOrden(documento.getOrdenHId(), documento.getId()) : 
-					documento.getPedidoH().size() != 0 && documento.getPedidoH() != null ? AgregarPedido(documento.getPedidoH(), documento.getId()) : 
-						false) {
+				if(documento.getOrdenHId().size() != 0 && documento.getOrdenHId() != null && documentoTemp != null? AgregarOrden(documento.getOrdenHId(), documentoTemp.getId()) : 
+					documento.getPedidoH().size() != 0 && documento.getPedidoH() != null && documentoTemp != null? AgregarPedido(documento.getPedidoH(), documentoTemp.getId()) : 
+					false) {
 					return true;				
 				}				
 			}

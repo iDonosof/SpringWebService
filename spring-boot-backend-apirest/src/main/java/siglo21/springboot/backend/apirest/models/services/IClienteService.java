@@ -9,6 +9,8 @@ public interface IClienteService {
 	public List<Cliente> findAll();
 
 	public Cliente findById(int id);
+	
+	public boolean existsById(int id);
 
 	public Cliente save(Cliente cliente);
 
