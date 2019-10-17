@@ -7,11 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import siglo21.springboot.backend.apirest.models.dao.IDocumentoDao;
+import siglo21.springboot.backend.apirest.models.dao.IMesaDao;
 import siglo21.springboot.backend.apirest.models.dao.IOrdenBDao;
 import siglo21.springboot.backend.apirest.models.dao.IOrdenHDao;
 import siglo21.springboot.backend.apirest.models.dao.IPedidoBDao;
 import siglo21.springboot.backend.apirest.models.dao.IPedidoHDao;
+import siglo21.springboot.backend.apirest.models.dao.IPlatilloDao;
+import siglo21.springboot.backend.apirest.models.dao.IProductoDao;
+import siglo21.springboot.backend.apirest.models.dao.IProveedorDao;
 import siglo21.springboot.backend.apirest.models.entity.Documento;
+import siglo21.springboot.backend.apirest.models.entity.Ingrediente;
 import siglo21.springboot.backend.apirest.models.entity.OrdenB;
 import siglo21.springboot.backend.apirest.models.entity.OrdenH;
 import siglo21.springboot.backend.apirest.models.entity.PedidoB;
@@ -34,6 +39,18 @@ public class DocumentoServiceImpl implements IDocumentoService {
 	
 	@Autowired
 	private IPedidoBDao pedidoBDao;
+	
+	@Autowired
+	private IMesaDao mesaDao;
+	
+	@Autowired
+	private IPlatilloDao platilloDao;
+	
+	@Autowired
+	private IProveedorDao proveedorDao;
+	
+	@Autowired
+	private IProductoDao productoDao;
 
 	@Override
 	public List<Documento> findAll() {
@@ -56,10 +73,13 @@ public class DocumentoServiceImpl implements IDocumentoService {
 	}
 
 	private List<Documento> RemoverIngredientes(List<Documento> param) {
+		//Realizo el for para eliminar la lista de ingredientes de los platillos para 
+		//Evitar mostrar mas datos de los que se requieren
+		//Esta lista de ingredientes es reemplazada por una lista en blanco
 		for (Documento documento : param) {
 			for (OrdenH ordenh : documento.getOrdenHId()) {
 				for (OrdenB ordenb : ordenh.getOrdenBId()) {
-					ordenb.getPlatilloId().setIngredienteId(null);
+					ordenb.getPlatilloId().setIngredienteId(new ArrayList<Ingrediente>());
 					;
 				}
 			}
@@ -68,10 +88,13 @@ public class DocumentoServiceImpl implements IDocumentoService {
 	}
 
 	private Documento RemoverIngredientes(Documento param) {
+		//Realizo el for para eliminar la lista de ingredientes de los platillos para 
+		//Evitar mostrar mas datos de los que se requieren
+		//Esta lista de ingredientes es reemplazada por una lista en blanco
 		if (param != null) {
 			for (OrdenH ordenh : param.getOrdenHId()) {
 				for (OrdenB ordenb : ordenh.getOrdenBId()) {
-					ordenb.setPlatilloId(null);
+					ordenb.getPlatilloId().setIngredienteId(new ArrayList<Ingrediente>());
 				}
 			}
 		}
@@ -80,18 +103,26 @@ public class DocumentoServiceImpl implements IDocumentoService {
 
 	private boolean AgregarDocumento(Documento documento) {
 		try {
+			/*
+			 * Se crea un documento con solo los datos del documento para poder realizar un for que agregue 
+			 * las ordenes o los pedidos header en caso de que tenga
+			 */
 			Documento documentoTemp = new Documento();
-			documentoTemp.setId(documento.getId());
 			documentoTemp.setFecha(documento.getFecha());
 			documentoTemp.setHora(documento.getHora());
 			documentoTemp.setTipo(documento.getTipo());
 			documentoTemp.setOrdenHId(new ArrayList<OrdenH>());
 			documentoTemp.setPedidoH(new ArrayList<PedidoH>());
-			documentoDao.save(documentoTemp);
-			if(documento.getOrdenHId().size() != 0 ? AgregarOrden(documento.getOrdenHId(), documento.getId()) : 
-				documento.getPedidoH().size() != 0 ? AgregarPedido(documento.getPedidoH(), documento.getId()) : 
-				false) {
-				return true;				
+			documentoTemp = documentoDao.save(documentoTemp);
+			//Pregunto si el documento fue ingresado correctamente
+			if(documentoTemp != null) {
+				//Pregunto si la lista de ordenes tiene un largo distinto a 0 es decir que no este vacia y que no sea nula, si se cumplen ambos casos realiza el metodo de insercion de las ordenes 
+				//En el caso de pedido pregunto si tiene un largo distinto a 0 es decir que no este vacia y que no sea nula, si se cumplen ambos casos realiza el metodo de insercion de los pedidos
+				if(documento.getOrdenHId().size() != 0 && documento.getOrdenHId() != null ? AgregarOrden(documento.getOrdenHId(), documento.getId()) : 
+					documento.getPedidoH().size() != 0 && documento.getPedidoH() != null ? AgregarPedido(documento.getPedidoH(), documento.getId()) : 
+						false) {
+					return true;				
+				}				
 			}
 		} catch (Exception e) {
 		}
@@ -100,18 +131,20 @@ public class DocumentoServiceImpl implements IDocumentoService {
 
 	private boolean AgregarOrden(List<OrdenH> orden, int idDocumento) {
 		try {
+			//Realizo un for para insertar el orden header y generar su id
 			for(OrdenH ordenH : orden) {
 				OrdenH oh = new OrdenH();
 				oh.setTotal(ordenH.getTotal());
 				oh.setEstado(ordenH.getEstado());
 				oh.setDocumentoId(idDocumento);
-				oh.setMesaId(ordenH.getMesaId());
+				oh.setMesaId(mesaDao.findById(ordenH.getMesaId().getId()).orElse(null));
 				OrdenH ordenHTemp = ordenHDao.save(oh);
+				//Realizo un for para insertar el orden body utilizando la id generada por el orden header
 				for(OrdenB ordenB : ordenH.getOrdenBId()) {
 					OrdenB ob = new OrdenB();
 					ob.setCantidad(ordenB.getCantidad());
 					ob.setSubtotal(ordenB.getSubtotal());
-					ob.setPlatilloId(ordenB.getPlatilloId());
+					ob.setPlatilloId(platilloDao.findById(ordenB.getPlatilloId().getId()).orElse(null));
 					ob.setOrdenHId(ordenHTemp.getId());
 					ordenBDao.save(ob);
 				}
@@ -125,19 +158,21 @@ public class DocumentoServiceImpl implements IDocumentoService {
 
 	private boolean AgregarPedido(List<PedidoH> pedido, int idDocumento) {
 		try {
+			//Realizo un for para insertar los pedidos header y generar la id
 			for(PedidoH pedidoH : pedido) {
-				PedidoH ph  =new PedidoH();
+				PedidoH ph = new PedidoH();
 				ph.setTotal(pedidoH.getTotal());
 				ph.setEstado(pedidoH.getEstado());
 				ph.setDocumentoId(idDocumento);
-				ph.setProveedor(pedidoH.getProveedor());
+				ph.setProveedor(proveedorDao.findById(pedidoH.getProveedor().getRut()).orElse(null));
 				PedidoH pedidoHTemp = pedidoHDao.save(ph);
+				//Realizo un for para insertar los pedidos bodies utilizando la id generada del pedido header
 				for(PedidoB pedidoB : pedidoH.getPedidoBId()) {
 					PedidoB pb = new PedidoB();
 					pb.setCantidad(pedidoB.getCantidad());
 					pb.setSubtotal(pedidoB.getSubtotal());
 					pb.setPedidoHId(pedidoHTemp.getId());
-					pb.setProductoId(pedidoB.getProductoId());
+					pb.setProductoId(productoDao.findById(pedidoB.getProductoId().getId()).orElse(null));
 					pedidoBDao.save(pb);
 				}
 			}

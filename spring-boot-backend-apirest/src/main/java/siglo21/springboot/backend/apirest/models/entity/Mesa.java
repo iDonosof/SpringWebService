@@ -20,11 +20,14 @@ public class Mesa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "NUMERO")
+	@Column(name = "NUMERO", nullable = false)
 	private int numero;
 
-	@Column(name = "CAPACIDAD")
+	@Column(name = "CAPACIDAD", nullable = false)
 	private int capacidad;
+
+	@Column(name = "ESTADO", nullable = false)
+	private int estado;
 
 	public int getId() {
 		return id;
@@ -48,6 +51,14 @@ public class Mesa implements Serializable {
 
 	public void setCapacidad(int capacidad) {
 		this.capacidad = capacidad;
+	}
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
 	}
 
 }

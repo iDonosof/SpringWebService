@@ -20,19 +20,19 @@ public class Producto implements Serializable {
 	@Column(name = "ID")
 	private int id;
 
-	@Column(name = "NOMBRE")
+	@Column(name = "NOMBRE", length = 70, nullable = false)
 	private String nombre;
 
-	@Column(name = "DESCRIPCION")
+	@Column(name = "DESCRIPCION", length = 255, nullable = false)
 	private String descripcion;
 
-	@Column(name = "CANTIDAD")
+	@Column(name = "CANTIDAD", nullable = false)
 	private int cantidad;
 
-	@Column(name = "PRECIO")
+	@Column(name = "PRECIO", nullable = false)
 	private int precio;
 
-	@Column(name = "CATEGORIA")
+	@Column(name = "CATEGORIA", length = 70, nullable = false)
 	private String categoria;
 
 	public int getId() {

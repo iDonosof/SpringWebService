@@ -17,16 +17,16 @@ public class Proveedor implements Serializable {
 	@Column(name = "RUT")
 	private String rut;
 
-	@Column(name = "NOMBRE")
+	@Column(name = "NOMBRE", length = 70, nullable = false)
 	private String nombre;
 
-	@Column(name = "TELEFONO")
+	@Column(name = "TELEFONO", length = 15, nullable = false)
 	private String telefono;
 
-	@Column(name = "DIRECCION")
+	@Column(name = "DIRECCION", length = 255, nullable = false)
 	private String direccion;
 
-	@Column(name = "CORREO")
+	@Column(name = "CORREO", length = 255, nullable = false)
 	private String correo;
 
 	public String getRut() {

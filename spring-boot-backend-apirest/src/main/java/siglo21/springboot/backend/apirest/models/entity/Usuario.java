@@ -23,25 +23,25 @@ public class Usuario implements Serializable {
 	@Column(name = "DV")
 	private char dv;
 
-	@Column(name = "USERNAME")
+	@Column(name = "USERNAME", length = 70, nullable = false)
 	private String username;
 
-	@Column(name = "PASSWORD")
+	@Column(name = "PASSWORD", length = 25, nullable = false)
 	private String password;
 
-	@Column(name = "NOMBRE")
+	@Column(name = "NOMBRE", length = 70, nullable = false)
 	private String nombre;
 
-	@Column(name = "APELLIDO")
+	@Column(name = "APELLIDO", length = 70, nullable = false)
 	private String apellido;
 
-	@Column(name = "ROL")
+	@Column(name = "ROL", nullable = false)
 	private int rol;
 
-	@Column(name = "CORREO")
+	@Column(name = "CORREO", length = 255, nullable = false)
 	private String correo;
 
-	@Column(name = "FECHA_NACIMIENTO")
+	@Column(name = "FECHA_NACIMIENTO", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date fechaNacimiento;
 

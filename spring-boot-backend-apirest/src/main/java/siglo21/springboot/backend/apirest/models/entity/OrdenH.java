@@ -31,13 +31,13 @@ public class OrdenH implements Serializable {
 	@Column(name = "ID")
 	private int id;
 
-	@Column(name = "TOTAL")
+	@Column(name = "TOTAL", nullable = false)
 	private int total;
 
-	@Column(name = "ESTADO")
+	@Column(name = "ESTADO", nullable = false)
 	private int estado;
 
-	@Column(name = "DOCUMENTO_ID")
+	@Column(name = "DOCUMENTO_ID", nullable = false)
 	private int documentoId;
 
 	@OneToMany(mappedBy = "ordenHId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

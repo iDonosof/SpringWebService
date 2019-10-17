@@ -28,12 +28,12 @@ public class Ingrediente implements Serializable {
 	@Column(name = "ID")
 	private int id;
 
-	@Column(name = "CANTIDAD")
+	@Column(name = "CANTIDAD", nullable = false)
 	private int cantidad;
 
-	@Column(name = "PLATILLO_ID")
+	@Column(name = "PLATILLO_ID", nullable = false)
 	private int platilloId;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "PRODUCTO_ID", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)

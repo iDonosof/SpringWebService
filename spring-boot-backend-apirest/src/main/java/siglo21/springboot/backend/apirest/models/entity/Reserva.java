@@ -31,26 +31,26 @@ public class Reserva implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "FECHA")
+	@Column(name = "FECHA", nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 
-	@Column(name = "HORA")
+	@Column(name = "HORA", length = 5, nullable = false)
 	private String hora;
 
-	@Column(name = "CANTIDAD_PERSONAS")
+	@Column(name = "CANTIDAD_PERSONAS", nullable = false)
 	private int cantidadPersonas;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "CLIENTE_ID", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Cliente clienteId;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "MESA_ID", nullable = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Mesa mesaId;
 
 	public int getId() {

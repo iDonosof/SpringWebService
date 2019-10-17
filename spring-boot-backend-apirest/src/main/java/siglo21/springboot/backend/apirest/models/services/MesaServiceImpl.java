@@ -39,4 +39,21 @@ public class MesaServiceImpl implements IMesaService {
 		mesaDao.deleteById(id);
 	}
 
+	@Override
+	public Mesa changeStatusAvailable(int id) {
+		try {
+			throw new Exception();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+
+	@Override
+	public Mesa changeStatusNotAvailable(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

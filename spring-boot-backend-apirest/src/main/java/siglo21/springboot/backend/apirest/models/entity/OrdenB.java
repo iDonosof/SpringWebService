@@ -28,10 +28,10 @@ public class OrdenB implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(name = "CANTIDAD")
+	@Column(name = "CANTIDAD", nullable = false)
 	private int cantidad;
 
-	@Column(name = "SUBTOTAL")
+	@Column(name = "SUBTOTAL", nullable = false)
 	private int subtotal;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -40,7 +40,7 @@ public class OrdenB implements Serializable {
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Platillo platilloId;
 
-	@Column(name = "ORDEN_H_ID")
+	@Column(name = "ORDEN_H_ID", nullable = false)
 	private int ordenHId;
 
 	public int getId() {

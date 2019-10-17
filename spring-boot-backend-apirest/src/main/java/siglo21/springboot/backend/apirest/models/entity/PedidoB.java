@@ -28,13 +28,13 @@ public class PedidoB implements Serializable {
 	@Column(name = "ID")
 	private int id;
 
-	@Column(name = "CANTIDAD")
+	@Column(name = "CANTIDAD", nullable = false)
 	private int cantidad;
 
-	@Column(name = "SUBTOTAL")
+	@Column(name = "SUBTOTAL", nullable = false)
 	private int subtotal;
 
-	@Column(name = "PEDIDO_H_ID")
+	@Column(name = "PEDIDO_H_ID", nullable = false)
 	private int pedidoHId;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

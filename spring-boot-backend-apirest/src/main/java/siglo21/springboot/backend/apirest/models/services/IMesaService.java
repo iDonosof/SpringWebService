@@ -11,6 +11,10 @@ public interface IMesaService {
 	public Mesa findById(int id);
 
 	public Mesa save(Mesa mesa);
+	
+	public Mesa changeStatusAvailable(int id);
+	
+	public Mesa changeStatusNotAvailable(int id);
 
 	public void delete(int id);
 }

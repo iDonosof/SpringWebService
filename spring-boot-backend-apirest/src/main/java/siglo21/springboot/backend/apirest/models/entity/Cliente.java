@@ -17,19 +17,19 @@ public class Cliente implements Serializable {
 	@Column(name = "RUT")
 	private int rut;
 
-	@Column(name = "DV")
+	@Column(name = "DV", nullable = false)
 	private char dv;
 
-	@Column(name = "NOMBRE")
+	@Column(name = "NOMBRE", length = 70, nullable = false)
 	private String nombre;
 
-	@Column(name = "APELLIDO")
+	@Column(name = "APELLIDO", length = 70, nullable = false)
 	private String apellido;
 
-	@Column(name = "CORREO")
+	@Column(name = "CORREO", length = 255, nullable = false)
 	private String correo;
 
-	@Column(name = "TELEFONO")
+	@Column(name = "TELEFONO", length = 255, nullable = false)
 	private String telefono;
 
 	public int getRut() {
