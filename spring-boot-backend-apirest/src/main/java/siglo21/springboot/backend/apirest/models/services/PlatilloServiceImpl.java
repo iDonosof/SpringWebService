@@ -41,7 +41,7 @@ public class PlatilloServiceImpl implements IPlatilloService {
 	@Transactional
 	public Platillo save(Platillo platillo) {
 		try {
-			AgregarIngredientes(platillo);
+			return AgregarIngredientes(platillo);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
