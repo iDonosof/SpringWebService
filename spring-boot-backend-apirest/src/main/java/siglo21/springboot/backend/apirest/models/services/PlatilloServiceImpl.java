@@ -57,10 +57,18 @@ public class PlatilloServiceImpl implements IPlatilloService {
 	private Platillo AgregarIngredientes(Platillo platillo) {
 		try {
 			Platillo platilloTemp = new Platillo();
-			platilloTemp.setIngredienteId(new ArrayList<Ingrediente>());
-			platilloTemp.setNombre(platillo.getNombre());
-			platilloTemp.setTiempo(platillo.getTiempo());
-			platilloTemp = platilloDao.save(platilloTemp);
+			if(!platilloDao.existsByNombre(platillo.getNombre()))
+			{
+				platilloTemp.setIngredienteId(new ArrayList<Ingrediente>());
+				platilloTemp.setNombre(platillo.getNombre());
+				platilloTemp.setTiempo(platillo.getTiempo());
+				platilloTemp = platilloDao.save(platilloTemp);				
+			}
+			else {
+				platilloTemp = platilloDao.findByNombre(platillo.getNombre());
+			}
+			System.out.println(platilloTemp);
+			System.out.println(platilloTemp.getId());
 			if(platilloTemp.getId() != 0 && platilloTemp != null) {
 				for(Ingrediente i : platillo.getIngredienteId()) {
 					Ingrediente ingrediente = new Ingrediente();
