@@ -40,12 +40,12 @@ public class OrdenH implements Serializable {
 	@Column(name = "DOCUMENTO_ID", nullable = false)
 	private int documentoId;
 
-	@OneToMany(mappedBy = "ordenHId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "ordenHId", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<OrdenB> ordenBId;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "MESA_ID", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Mesa mesaId;
 

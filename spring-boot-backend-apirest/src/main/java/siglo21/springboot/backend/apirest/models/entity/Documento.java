@@ -37,10 +37,10 @@ public class Documento implements Serializable {
 	@Column(name = "TIPO", nullable = true)
 	private int tipo;
 
-	@OneToMany(mappedBy = "documentoId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "documentoId", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<OrdenH> ordenHId;
 
-	@OneToMany(mappedBy = "documentoId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "documentoId", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<PedidoH> pedidoH;
 
 	public List<OrdenH> getOrdenHId() {

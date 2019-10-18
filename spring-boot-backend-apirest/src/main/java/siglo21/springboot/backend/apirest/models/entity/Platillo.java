@@ -33,7 +33,7 @@ public class Platillo implements Serializable {
 	@Column(name = "PRECIO", nullable = true)
 	private int precio;
 
-	@OneToMany(mappedBy = "platilloId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "platilloId", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<Ingrediente> ingredienteId;
 
 	public int getId() {

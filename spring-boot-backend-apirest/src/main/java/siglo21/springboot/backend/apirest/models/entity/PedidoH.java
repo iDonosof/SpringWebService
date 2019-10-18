@@ -41,11 +41,11 @@ public class PedidoH implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "PROVEEDOR_ID", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Proveedor proveedor;
 
-	@OneToMany(mappedBy = "pedidoHId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pedidoHId", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
 	private List<PedidoB> pedidoBId;
 
 	public int getId() {
