@@ -62,24 +62,27 @@ public class PlatilloServiceImpl implements IPlatilloService {
 				platilloTemp.setIngredienteId(new ArrayList<Ingrediente>());
 				platilloTemp.setNombre(platillo.getNombre());
 				platilloTemp.setTiempo(platillo.getTiempo());
+				platilloTemp.setPrecio(platillo.getPrecio());
 				platilloTemp = platilloDao.save(platilloTemp);				
 			}
 			else {
 				platilloTemp = platilloDao.findByNombre(platillo.getNombre());
 			}
-			System.out.println(platilloTemp);
-			System.out.println(platilloTemp.getId());
+			System.out.println(platilloTemp.getPrecio());
 			if(platilloTemp.getId() != 0 && platilloTemp != null) {
 				for(Ingrediente i : platillo.getIngredienteId()) {
 					Ingrediente ingrediente = new Ingrediente();
 					ingrediente.setCantidad(i.getCantidad());
 					ingrediente.setPlatilloId(platilloTemp.getId());
-					ingrediente.setProductoId(productoDao.findById(ingrediente.getProductoId().getId()).orElse(null));
-					platilloTemp.getIngredienteId().add(ingredienteDao.save(ingrediente));
+					System.out.println("Se cae en el buscar");
+					ingrediente.setProductoId(productoDao.findById(i.getProductoId().getId()).orElse(null));
+					ingrediente = ingredienteDao.save(ingrediente);
+					platilloTemp.getIngredienteId().add(ingrediente);
 				}
 			}
 			return platilloTemp;
 		} catch (Exception e) {
+			System.out.println("Esta wea se cae por: " + e.getMessage());
 		}
 		return null;
 	}
