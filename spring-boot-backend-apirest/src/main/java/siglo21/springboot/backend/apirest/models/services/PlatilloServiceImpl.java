@@ -39,9 +39,17 @@ public class PlatilloServiceImpl implements IPlatilloService {
 
 	@Override
 	@Transactional
-	public Platillo save(Platillo platillo) {
+	public Platillo save(Platillo platillo, boolean saveOption) {
+		//saveOption equivale a la opcion si quiere actualizar o ingresar un nuevo producto
+		//La opcion "true" equivale a que el platillo ya existe y se dea actualizar
+		//Si la opcion es "false" es porque se desea ingresar un nuevo producto
 		try {
-			return AgregarIngredientes(platillo);
+			if(saveOption) {
+				return platilloDao.save(platillo);
+			} 
+			else {
+				return AgregarIngredientes(platillo);				
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -68,13 +76,11 @@ public class PlatilloServiceImpl implements IPlatilloService {
 			else {
 				platilloTemp = platilloDao.findByNombre(platillo.getNombre());
 			}
-			System.out.println(platilloTemp.getPrecio());
 			if(platilloTemp.getId() != 0 && platilloTemp != null) {
 				for(Ingrediente i : platillo.getIngredienteId()) {
 					Ingrediente ingrediente = new Ingrediente();
 					ingrediente.setCantidad(i.getCantidad());
 					ingrediente.setPlatilloId(platilloTemp.getId());
-					System.out.println("Se cae en el buscar");
 					ingrediente.setProductoId(productoDao.findById(i.getProductoId().getId()).orElse(null));
 					ingrediente = ingredienteDao.save(ingrediente);
 					platilloTemp.getIngredienteId().add(ingrediente);

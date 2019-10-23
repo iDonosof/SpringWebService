@@ -10,7 +10,7 @@ public interface IPlatilloService {
 	
 	public Platillo findById(int id);
 	
-	public Platillo save(Platillo platillo);
+	public Platillo save(Platillo platillo, boolean saveOption);
 	
 	public void delete(int id);
 }

@@ -46,6 +46,7 @@ public class OrdenBController {
 	public OrdenB ActualizarOrdenB(@RequestBody OrdenB ordenB, @PathVariable int id) {
 		OrdenB ordenBActual = ordenBService.findById(id);
 		ordenBActual.setCantidad(ordenB.getCantidad());
+		ordenBActual.setSubtotal(ordenB.getSubtotal());
 		return ordenBService.save(ordenBActual);
 	}
 

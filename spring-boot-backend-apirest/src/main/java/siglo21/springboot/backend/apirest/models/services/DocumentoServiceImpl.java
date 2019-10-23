@@ -127,9 +127,13 @@ public class DocumentoServiceImpl implements IDocumentoService {
 					documento.getPedidoH().size() != 0 && documento.getPedidoH() != null && documentoTemp != null? AgregarPedido(documento.getPedidoH(), documentoTemp.getId()) : 
 					false) {
 					return true;				
-				}				
+				}
+				else {
+					return true;					
+				}
 			}
 		} catch (Exception e) {
+			System.out.println("Se esta callendo la wea xd");
 		}
 		return false;
 	}

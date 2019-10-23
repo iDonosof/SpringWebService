@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import siglo21.springboot.backend.apirest.models.dao.IMesaDao;
 import siglo21.springboot.backend.apirest.models.dao.IOrdenBDao;
 import siglo21.springboot.backend.apirest.models.dao.IOrdenHDao;
 import siglo21.springboot.backend.apirest.models.dao.IPlatilloDao;
+import siglo21.springboot.backend.apirest.models.entity.Ingrediente;
 import siglo21.springboot.backend.apirest.models.entity.OrdenB;
 import siglo21.springboot.backend.apirest.models.entity.OrdenH;
 
@@ -24,6 +26,9 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	
 	@Autowired
 	private IPlatilloDao platilloDao;
+	
+	@Autowired 
+	private IMesaDao mesaDao;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -40,16 +45,7 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	@Override
 	@Transactional
 	public OrdenH save(OrdenH ordenH) {
-		OrdenH orden = new OrdenH();
-		orden.setTotal(ordenH.getTotal());
-		orden.setEstado(ordenH.getEstado());
-		orden.setDocumentoId(ordenH.getDocumentoId());
-		orden.setOrdenBId(new ArrayList<OrdenB>());
-		orden.setMesaId(ordenH.getMesaId());
-		OrdenH ordenHTemp = ordenHDao.save(orden);
-		if (ordenH.getOrdenBId().size() != 0)
-			AgregarOrden(ordenH, ordenHTemp.getId());
-		return RemoverIngredientes(ordenHDao.save(ordenH));
+		return ordenH.getId() != 0 ? ordenHDao.save(ordenH) : AgregarOrden(ordenH);
 	}
 
 	@Override
@@ -76,7 +72,7 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	private List<OrdenH> RemoverIngredientes(List<OrdenH> param) {
 		for (OrdenH ordenh : param) {
 			for (OrdenB ordenb : ordenh.getOrdenBId()) {
-				ordenb.getPlatilloId().setIngredienteId(null);
+				ordenb.getPlatilloId().setIngredienteId(new ArrayList<Ingrediente>());
 			}
 		}
 		return param;
@@ -85,27 +81,35 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	private OrdenH RemoverIngredientes(OrdenH param) {
 		if (param != null) {
 			for (OrdenB ordenb : param.getOrdenBId()) {
-				ordenb.getPlatilloId().setIngredienteId(null);
+				ordenb.getPlatilloId().setIngredienteId(new ArrayList<Ingrediente>());
 			}
 		}
 		return param;
 	}
 
-	private boolean AgregarOrden(OrdenH orden, int idOrdenH) {
+	private OrdenH AgregarOrden(OrdenH ordenH) {
 		try {
-			for (OrdenB ordenB : orden.getOrdenBId()) {
+			OrdenH ordenHTemp = new OrdenH();
+			ordenHTemp.setDocumentoId(ordenH.getDocumentoId());
+			ordenHTemp.setEstado(ordenH.getEstado());
+			ordenHTemp.setMesaId(mesaDao.findById(ordenH.getMesaId().getId()).orElse(null));
+			ordenHTemp.setOrdenBId(new ArrayList<OrdenB>());
+			ordenHTemp.setTotal(ordenH.getTotal());
+			ordenHTemp = ordenHDao.save(ordenHTemp);
+			for (OrdenB ordenB : ordenH.getOrdenBId()) {
 				OrdenB ob = new OrdenB();
 				ob.setCantidad(ordenB.getCantidad());
 				ob.setSubtotal(ordenB.getSubtotal());
 				ob.setPlatilloId(platilloDao.findById(ordenB.getPlatilloId().getId()).orElse(null));
-				ob.setOrdenHId(idOrdenH);
-				ordenBDao.save(ob);
+				ob.getPlatilloId().setIngredienteId(new ArrayList<Ingrediente>());
+				ob.setOrdenHId(ordenHTemp.getId());
+				ordenHTemp.getOrdenBId().add(ordenBDao.save(ob));
 			}
-			return true;
+			return ordenHTemp;
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		return false;
+		return null;
 	}
 
 	
