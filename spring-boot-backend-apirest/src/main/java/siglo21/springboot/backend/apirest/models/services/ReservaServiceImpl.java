@@ -39,7 +39,7 @@ public class ReservaServiceImpl implements IReservaService {
 	@Transactional
 	public Reserva save(Reserva reserva) {
 		if(!clienteDao.existsById(reserva.getClienteId().getRut()))
-			clienteDao.save(reserva.getClienteId());
+			reserva.setClienteId(clienteDao.save(reserva.getClienteId()));
 		reserva.setMesaId(mesaDao.findById(reserva.getMesaId().getId()).orElse(null));
 		return reservaDao.save(reserva);
 	}

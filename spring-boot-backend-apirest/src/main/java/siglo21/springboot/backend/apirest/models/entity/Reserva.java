@@ -41,6 +41,9 @@ public class Reserva implements Serializable {
 	@Column(name = "CANTIDAD_PERSONAS", nullable = false)
 	private int cantidadPersonas;
 
+	@Column(name = "ESTADO", nullable = false)
+	private int estado;
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "CLIENTE_ID", nullable = false)
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
@@ -99,6 +102,14 @@ public class Reserva implements Serializable {
 
 	public void setMesaId(Mesa mesaId) {
 		this.mesaId = mesaId;
+	}
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
 	}
 
 }
