@@ -54,4 +54,19 @@ public class ReservaServiceImpl implements IReservaService {
 		reservaDao.deleteById(id);
 	}
 
+	@Override
+	@Transactional
+	public Reserva changeStatusOcuppied(int id) {
+		try {
+			Reserva reservaTemp = reservaDao.findById(id).orElse(null);
+			if(reservaTemp != null) {
+				reservaTemp.setEstado(2);
+				return reservaDao.save(reservaTemp);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+
 }

@@ -13,4 +13,6 @@ public interface IReservaService {
 	public Reserva save(Reserva reserva);
 	
 	public void delete(int id);
+	
+	public Reserva changeStatusOcuppied(int id);
 }

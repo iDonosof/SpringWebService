@@ -35,6 +35,11 @@ public class ReservaController {
 	public Reserva BuscarReserva(@PathVariable int id) {
 		return reservaService.findById(id);
 	}
+	
+	@GetMapping("/cambiar-estado-reserva/{id}")
+	public Reserva CambiarEstadoReserva(@PathVariable int id) {
+		return reservaService.changeStatusOcuppied(id);
+	}
 
 	@PostMapping("/crear-reserva")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -48,6 +53,7 @@ public class ReservaController {
 		Reserva reservaActual = reservaService.findById(id);
 		reservaActual.setFecha(reserva.getFecha());
 		reservaActual.setHora(reserva.getHora());
+		reservaActual.setEstado(reserva.getEstado());
 		reservaActual.setCantidadPersonas(reserva.getCantidadPersonas());
 		reservaActual.setMesaId(reserva.getMesaId());
 		return reservaService.save(reservaActual);
