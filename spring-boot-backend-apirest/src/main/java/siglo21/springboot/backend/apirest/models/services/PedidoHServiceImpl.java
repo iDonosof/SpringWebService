@@ -43,7 +43,7 @@ public class PedidoHServiceImpl implements IPedidoHService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public PedidoH save(PedidoH pedidoH) {
 		return pedidoH.getId() != 0 ? pedidoHDao.save(pedidoH) : AgregarPedido(pedidoH);
 	}
@@ -57,58 +57,44 @@ public class PedidoHServiceImpl implements IPedidoHService {
 	@Override
 	@Transactional
 	public PedidoH changeStatus(int id) {
-		try {
-			PedidoH pedidoHTemp = pedidoHDao.findById(id).orElse(null);
-			if(pedidoHTemp != null) {
-				pedidoHTemp.setEstado(2);
-				for(PedidoB pedidob : pedidoHTemp.getPedidoBId()) {
-					ActualizarStock(pedidob.getProductoId().getId(), pedidob.getCantidad());
-				}
-				return pedidoHDao.save(pedidoHTemp);
+		PedidoH pedidoHTemp = pedidoHDao.findById(id).orElse(null);
+		if(pedidoHTemp != null) {
+			pedidoHTemp.setEstado(2);
+			for(PedidoB pedidob : pedidoHTemp.getPedidoBId()) {
+				ActualizarStock(pedidob.getProductoId().getId(), pedidob.getCantidad());
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
+			return pedidoHDao.save(pedidoHTemp);
 		}
-		return null;
+		return pedidoHTemp;
 	}
 	
 	private PedidoH AgregarPedido(PedidoH pedidoH) {
-		try {
-			PedidoH pedidoHTemp = new PedidoH();
-			pedidoHTemp.setDocumentoId(pedidoH.getDocumentoId());
-			pedidoHTemp.setEstado(pedidoH.getEstado());
-			pedidoHTemp.setProveedor(proveedorDao.findById(pedidoH.getProveedor().getRut()).orElse(null));
-			pedidoHTemp.setTotal(pedidoH.getTotal());
-			pedidoHTemp.setPedidoBId(new ArrayList<PedidoB>());
-			pedidoHTemp = pedidoHDao.save(pedidoHTemp);
-			if(pedidoH.getPedidoBId().size() != 0 && pedidoH.getPedidoBId() != null) {
-				for(PedidoB pedidoB : pedidoH.getPedidoBId()) {
-					PedidoB pb = new PedidoB();
-					pb.setCantidad(pedidoB.getCantidad());
-					pb.setPedidoHId(pedidoHTemp.getId());
-					pb.setProductoId(productoDao.findById(pedidoB.getProductoId().getId()).orElse(null));
-					pb.setSubtotal(pedidoB.getSubtotal());
-					pedidoHTemp.getPedidoBId().add(pedidoBDao.save(pb));
-				}
+		PedidoH pedidoHTemp = new PedidoH();
+		pedidoHTemp.setDocumentoId(pedidoH.getDocumentoId());
+		pedidoHTemp.setEstado(pedidoH.getEstado());
+		pedidoHTemp.setProveedor(proveedorDao.findById(pedidoH.getProveedor().getRut()).orElse(null));
+		pedidoHTemp.setTotal(pedidoH.getTotal());
+		pedidoHTemp.setPedidoBId(new ArrayList<PedidoB>());
+		pedidoHTemp = pedidoHDao.save(pedidoHTemp);
+		if(pedidoH.getPedidoBId().size() != 0 && pedidoH.getPedidoBId() != null) {
+			for(PedidoB pedidoB : pedidoH.getPedidoBId()) {
+				PedidoB pb = new PedidoB();
+				pb.setCantidad(pedidoB.getCantidad());
+				pb.setPedidoHId(pedidoHTemp.getId());
+				pb.setProductoId(productoDao.findById(pedidoB.getProductoId().getId()).orElse(null));
+				pb.setSubtotal(pedidoB.getSubtotal());
+				pedidoHTemp.getPedidoBId().add(pedidoBDao.save(pb));
 			}
-			return pedidoHTemp;
-		} catch (Exception e) {
-			// TODO: handle exception
 		}
-		return null;
+		return pedidoHTemp;
 	}
 	
 	private boolean ActualizarStock(int id, int cantidad) {
-		try {
-			Producto producto = productoDao.findById(id).orElse(null);
-			if(producto != null) {
-				producto.setCantidad(producto.getCantidad() + cantidad);
-				if(productoDao.save(producto) != null)
-					return true;
-			}
-			throw new Exception();
-		} catch (Exception e) {
-			// TODO: handle exception
+		Producto producto = productoDao.findById(id).orElse(null);
+		if(producto != null) {
+			producto.setCantidad(producto.getCantidad() + cantidad);
+			if(productoDao.save(producto) != null)
+				return true;
 		}
 		return false;
 	}

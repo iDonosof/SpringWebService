@@ -43,7 +43,7 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public OrdenH save(OrdenH ordenH) {
 		return ordenH.getId() != 0 ? ordenHDao.save(ordenH) : AgregarOrden(ordenH);
 	}
@@ -57,16 +57,12 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	@Override
 	@Transactional
 	public OrdenH changeStatusPaid(int id) {
-		try {
-			OrdenH ordenHTemp = ordenHDao.findById(id).orElse(null);
-			if(ordenHTemp != null) {
-				ordenHTemp.setEstado(2);
-				return ordenHDao.save(ordenHTemp);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
+		OrdenH ordenHTemp = ordenHDao.findById(id).orElse(null);
+		if(ordenHTemp != null) {
+			ordenHTemp.setEstado(2);
+			return ordenHDao.save(ordenHTemp);
 		}
-		return null;
+		return ordenHTemp;
 	}
 
 	private List<OrdenH> RemoverIngredientes(List<OrdenH> param) {
@@ -88,28 +84,23 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	}
 
 	private OrdenH AgregarOrden(OrdenH ordenH) {
-		try {
-			OrdenH ordenHTemp = new OrdenH();
-			ordenHTemp.setDocumentoId(ordenH.getDocumentoId());
-			ordenHTemp.setEstado(ordenH.getEstado());
-			ordenHTemp.setMesaId(mesaDao.findById(ordenH.getMesaId().getId()).orElse(null));
-			ordenHTemp.setOrdenBId(new ArrayList<OrdenB>());
-			ordenHTemp.setTotal(ordenH.getTotal());
-			ordenHTemp = ordenHDao.save(ordenHTemp);
-			for (OrdenB ordenB : ordenH.getOrdenBId()) {
-				OrdenB ob = new OrdenB();
-				ob.setCantidad(ordenB.getCantidad());
-				ob.setSubtotal(ordenB.getSubtotal());
-				ob.setPlatilloId(platilloDao.findById(ordenB.getPlatilloId().getId()).orElse(null));
-				ob.getPlatilloId().setIngredienteId(new ArrayList<Ingrediente>());
-				ob.setOrdenHId(ordenHTemp.getId());
-				ordenHTemp.getOrdenBId().add(ordenBDao.save(ob));
-			}
-			return ordenHTemp;
-		} catch (Exception e) {
-			// TODO: handle exception
+		OrdenH ordenHTemp = new OrdenH();
+		ordenHTemp.setDocumentoId(ordenH.getDocumentoId());
+		ordenHTemp.setEstado(ordenH.getEstado());
+		ordenHTemp.setMesaId(mesaDao.findById(ordenH.getMesaId().getId()).orElse(null));
+		ordenHTemp.setOrdenBId(new ArrayList<OrdenB>());
+		ordenHTemp.setTotal(ordenH.getTotal());
+		ordenHTemp = ordenHDao.save(ordenHTemp);
+		for (OrdenB ordenB : ordenH.getOrdenBId()) {
+			OrdenB ob = new OrdenB();
+			ob.setCantidad(ordenB.getCantidad());
+			ob.setSubtotal(ordenB.getSubtotal());
+			ob.setPlatilloId(platilloDao.findById(ordenB.getPlatilloId().getId()).orElse(null));
+			ob.getPlatilloId().setIngredienteId(new ArrayList<Ingrediente>());
+			ob.setOrdenHId(ordenHTemp.getId());
+			ordenHTemp.getOrdenBId().add(ordenBDao.save(ob));
 		}
-		return null;
+		return ordenHTemp;
 	}
 
 	

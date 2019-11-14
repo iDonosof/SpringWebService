@@ -57,16 +57,12 @@ public class ReservaServiceImpl implements IReservaService {
 	@Override
 	@Transactional
 	public Reserva changeStatusOcuppied(int id) {
-		try {
-			Reserva reservaTemp = reservaDao.findById(id).orElse(null);
-			if(reservaTemp != null) {
-				reservaTemp.setEstado(2);
-				return reservaDao.save(reservaTemp);
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
+		Reserva reservaTemp = reservaDao.findById(id).orElse(null);
+		if(reservaTemp != null) {
+			reservaTemp.setEstado(2);
+			return reservaDao.save(reservaTemp);
 		}
-		return null;
+		return reservaTemp;
 	}
 
 }

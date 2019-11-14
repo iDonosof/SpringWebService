@@ -43,17 +43,12 @@ public class PlatilloServiceImpl implements IPlatilloService {
 		//saveOption equivale a la opcion si quiere actualizar o ingresar un nuevo producto
 		//La opcion "true" equivale a que el platillo ya existe y se dea actualizar
 		//Si la opcion es "false" es porque se desea ingresar un nuevo producto
-		try {
-			if(saveOption) {
-				return platilloDao.save(platillo);
-			} 
-			else {
-				return AgregarIngredientes(platillo);				
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
+		if(saveOption) {
+			return platilloDao.save(platillo);
+		} 
+		else {
+			return AgregarIngredientes(platillo);				
 		}
-		return null;
 	}
 
 	@Override
@@ -63,33 +58,28 @@ public class PlatilloServiceImpl implements IPlatilloService {
 	}
 
 	private Platillo AgregarIngredientes(Platillo platillo) {
-		try {
-			Platillo platilloTemp = new Platillo();
-			if(!platilloDao.existsByNombre(platillo.getNombre()))
-			{
-				platilloTemp.setIngredienteId(new ArrayList<Ingrediente>());
-				platilloTemp.setNombre(platillo.getNombre());
-				platilloTemp.setTiempo(platillo.getTiempo());
-				platilloTemp.setPrecio(platillo.getPrecio());
-				platilloTemp = platilloDao.save(platilloTemp);				
-			}
-			else {
-				platilloTemp = platilloDao.findByNombre(platillo.getNombre());
-			}
-			if(platilloTemp.getId() != 0 && platilloTemp != null) {
-				for(Ingrediente i : platillo.getIngredienteId()) {
-					Ingrediente ingrediente = new Ingrediente();
-					ingrediente.setCantidad(i.getCantidad());
-					ingrediente.setPlatilloId(platilloTemp.getId());
-					ingrediente.setProductoId(productoDao.findById(i.getProductoId().getId()).orElse(null));
-					ingrediente = ingredienteDao.save(ingrediente);
-					platilloTemp.getIngredienteId().add(ingrediente);
-				}
-			}
-			return platilloTemp;
-		} catch (Exception e) {
-			System.out.println("Esta wea se cae por: " + e.getMessage());
+		Platillo platilloTemp = new Platillo();
+		if(!platilloDao.existsByNombre(platillo.getNombre()))
+		{
+			platilloTemp.setIngredienteId(new ArrayList<Ingrediente>());
+			platilloTemp.setNombre(platillo.getNombre());
+			platilloTemp.setTiempo(platillo.getTiempo());
+			platilloTemp.setPrecio(platillo.getPrecio());
+			platilloTemp = platilloDao.save(platilloTemp);				
 		}
-		return null;
+		else {
+			platilloTemp = platilloDao.findByNombre(platillo.getNombre());
+		}
+		if(platilloTemp.getId() != 0 && platilloTemp != null) {
+			for(Ingrediente i : platillo.getIngredienteId()) {
+				Ingrediente ingrediente = new Ingrediente();
+				ingrediente.setCantidad(i.getCantidad());
+				ingrediente.setPlatilloId(platilloTemp.getId());
+				ingrediente.setProductoId(productoDao.findById(i.getProductoId().getId()).orElse(null));
+				ingrediente = ingredienteDao.save(ingrediente);
+				platilloTemp.getIngredienteId().add(ingrediente);
+			}
+		}
+		return platilloTemp;
 	}
 }
