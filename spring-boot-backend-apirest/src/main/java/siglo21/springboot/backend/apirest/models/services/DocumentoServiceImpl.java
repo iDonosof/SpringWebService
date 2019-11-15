@@ -121,9 +121,11 @@ public class DocumentoServiceImpl implements IDocumentoService {
 		//Pregunto si el documento fue ingresado correctamente
 		if(documentoTemp != null) {
 			if(documento.getOrdenHId().size() != 0 && documento.getOrdenHId() != null) {
+				documentoTemp.setPedidoH(new ArrayList<PedidoH>());
 				documentoTemp = AgregarOrden(documento.getOrdenHId(), documentoTemp);
 			}
 			else if(documento.getPedidoH().size() != 0 && documento.getPedidoH() != null && documentoTemp != null) {
+				documentoTemp.setOrdenHId(new ArrayList<OrdenH>());
 				documentoTemp = AgregarPedido(documento.getPedidoH(), documentoTemp);
 			}
 		}
