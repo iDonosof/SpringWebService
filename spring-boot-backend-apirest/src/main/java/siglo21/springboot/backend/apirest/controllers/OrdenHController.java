@@ -84,7 +84,7 @@ public class OrdenHController {
 				response.put("message", "Ocurrio un error al ingresar los datos a la base de datos");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
-			return new ResponseEntity<OrdenH>(ordenH, HttpStatus.CREATED);
+			return new ResponseEntity<OrdenH>(ordenHOut, HttpStatus.CREATED);
 		} catch (Exception e) {
 			response.put("error", e.getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
