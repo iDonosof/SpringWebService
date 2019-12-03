@@ -1,8 +1,10 @@
 package siglo21.springboot.backend.apirest.controllers;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,6 +71,7 @@ public class DocumentoController {
 				response.put("message", "Ocurrio un error al ingresar el documento a la base de datos, compruebe los datos ingresados");
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+			documentoOut.setFecha(new Date(documentoOut.getFecha().getTime() - TimeUnit.DAYS.toMillis( 1 )));
 			return new ResponseEntity<Documento>(documentoOut, HttpStatus.CREATED);
 		} catch (Exception e) {
 			response.put("error", e.getMessage());

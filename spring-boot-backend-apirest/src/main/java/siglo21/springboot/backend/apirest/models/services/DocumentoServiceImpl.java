@@ -3,6 +3,7 @@ package siglo21.springboot.backend.apirest.models.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -113,7 +114,7 @@ public class DocumentoServiceImpl implements IDocumentoService {
 		 * las ordenes o los pedidos header en caso de que tenga
 		 */
 		Documento documentoTemp = new Documento();
-		documentoTemp.setFecha(new Date(documento.getFecha().getTime()));
+		documentoTemp.setFecha(new Date(documento.getFecha().getTime() + TimeUnit.DAYS.toMillis( 1 )));
 		documentoTemp.setHora(documento.getHora());
 		documentoTemp.setTipo(documento.getTipo());
 		documentoTemp.setOrdenHId(new ArrayList<OrdenH>());
