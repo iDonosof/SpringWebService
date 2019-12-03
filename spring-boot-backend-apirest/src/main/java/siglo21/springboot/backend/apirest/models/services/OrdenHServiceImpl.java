@@ -84,7 +84,6 @@ public class OrdenHServiceImpl implements IOrdenHService {
 	}
 
 	private OrdenH AgregarOrden(OrdenH ordenH) {
-		System.out.println("Entramos a la funcion");
 		OrdenH ordenHTemp = new OrdenH();
 		ordenHTemp.setDocumentoId(ordenH.getDocumentoId());
 		ordenHTemp.setEstado(ordenH.getEstado());
@@ -101,7 +100,6 @@ public class OrdenHServiceImpl implements IOrdenHService {
 			ob.setOrdenHId(ordenHTemp.getId());
 			ordenHTemp.getOrdenBId().add(ordenBDao.save(ob));
 		}
-		System.out.println(ordenHTemp.getId());
 		return ordenHTemp;
 	}
 }
